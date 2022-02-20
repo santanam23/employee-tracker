@@ -27,51 +27,91 @@ connection.connect(function(err) {
     console.log("*        EMPLOYEE MANAGER         *")
     console.log("*                                 *")
     console.log("***********************************")
-    start();
+    promptUser();
   };
 // inquirer prompt for questions
-function start() {
+function promptUser() {
     inquirer
     .prompt ([
       {
             type: 'list',
-            name: 'start',
+            name: 'choices',
             message: 'What would you like to do?',
-            choices: ["View", "Add", "Update", "No Action"
-            ]
+            choices: [
+            'View all departments', 
+            'View all roles', 
+            'View all employees', 
+            'Add a department', 
+            'Add a role', 
+            'Add an employee', 
+            'Update an employee role',
+            'Update an employee manager',
+            "View employees by department",
+            'Delete a department',
+            'Delete a role',
+            'Delete an employee',
+            'View department budgets',
+            'No Action']
         }
     ])
-    .then(function(res) {
-        switch(res.start) {
-            case "View":
-                view();
-            break;
-            case "Add":
-                add();
-            break;
-            case "Update":
-                updateEmployee();
-            break;
-            case "No Action":
-                console.log("----------------");
-                console.log("All Done!");
-                console.log("----------------");
-                break;
-            default:
-                console.log("default");
+    .then(function(answers) {
+        const { choices } = answers;
+
+        if (choices === "View all departments") {
+            showDepartments();
         }
-});
+        if (choices === "View all roles") {
+            showRoles();
+        }
+        if (choices === "View all employees") {
+            showEmployees();
+        }
+        if (choices === "Add a department") {
+            addDepartment();
+        }
+        if (choices === "Add a role") {
+            addRole();
+        }
+        if (choices === "Add an employee") {
+            addEmployee();
+        }
+        if (choices === "Update an employee role") {
+            updateEmployee();
+        }
+        if (choices === "Update an employee manager") {
+            updateManager();
+        }
+        if (choices === "View employees by department") {
+            employeeDepartment();
+        }
+        if (choices === "Delete a department") {
+            deleteDepartment();
+        }
+        if (choices === "Delete a role") {
+            deleteRole();
+        }
+        if (choices === "Delete an employee") {
+            deleteEmployee();
+        }
+        if (choices === "View department budgets") {
+            viewBudget();
+        }
+        if (choices === "No Actions") {
+            connection.end();
+        };
+    });
+};
 
 // function to show all departments 
-function view (){
-    inquirer
-    .prompt([
-        {
-            type: "list",
-            name: "view"
-        }
-    ])
-}
+showDepartments = () => {
+  console.log('Showing all departments...\n');
+  const sql = `SELECT department.id AS id, department.name AS department FROM department`; 
+
+  connection.promise().query(sql, (err, rows) => {
+    if (err) throw err;
+    console.table(rows);
+    promptUser();
+  });
 };
 
 // function to show all roles 
