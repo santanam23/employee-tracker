@@ -8,20 +8,20 @@ require('dotenv').config();
 
 // connection to database
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'R@m!r3Z*1',
-    database: 'employee_db'
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER ,
+    password: process.env.DB_PW,
+    database: process.env.DB_NAME
   });
 
-connection.connect(err => {
+connection.connect(function(err) {
     if (err) throw err;
-    console.log('connected as id ' + connection.threadId);
+    console.log('SQL connected');
     afterConnection();
   });
   
   // function after connection is established and welcome image shows 
-  afterConnection = () => {
+  afterConnection = function() {
     console.log("***********************************")
     console.log("*                                 *")
     console.log("*        EMPLOYEE MANAGER         *")
@@ -30,7 +30,7 @@ connection.connect(err => {
     promptUser();
   };
 // inquirer prompt for questions
-const promptUser = () => {
+function promptUser() {
     inquirer
     .prompt ([
       {
@@ -54,7 +54,7 @@ const promptUser = () => {
             'No Action']
         }
     ])
-    .then((answers) => {
+    .then(function(answers) {
         const { choices } = answers;
 
         if (choices === "View all departments") {
@@ -66,13 +66,13 @@ const promptUser = () => {
         if (choices === "View all employees") {
             showEmployees();
         }
-        if (choices === "ADD a department") {
+        if (choices === "Add a department") {
             addDepartment();
         }
-        if (choices === "ADD a role") {
+        if (choices === "Add a role") {
             addRole();
         }
-        if (choices === "ADD an employee") {
+        if (choices === "Add an employee") {
             addEmployee();
         }
         if (choices === "Update an employee role") {
@@ -103,7 +103,7 @@ const promptUser = () => {
 };
 
 // Show all departments
-showDepartments = () => {
+showDepartments = function() {
     console.log('Showing all departments...\n');
     const sql = `SELECT department.id AS id, department.name AS department FROM department`;
 
@@ -115,7 +115,7 @@ showDepartments = () => {
 };
 
 // Show all roles
-showRoles = () => {
+showRoles = function() {
     console.log('Show all roles...\n');
 
     const sql = `SELECT role.id, role.title, department.name AS department FROM role
@@ -129,7 +129,7 @@ showRoles = () => {
 };
 
 // function to show all employees
-showEmployees = () => {
+showEmployees = function() {
     console.log('Show all employees...\n');
     const sql = `SELECT employee.id,
                         employee.first_name,
@@ -149,7 +149,7 @@ showEmployees = () => {
     });
 };
 // function to add a department
-addDepartment = () => {
+addDepartment = function() {
     inquirer.prompt([
     {
         type: 'input',
@@ -165,7 +165,7 @@ addDepartment = () => {
         }
     }
   ])
-    .then(answer => {
+    .then(function(answer) {
         const sql = `INSERT INTO department (name) VALUES (?)`;
         connection.query(sql, (err, _results) => {
             if (err) throw err;
@@ -176,8 +176,9 @@ addDepartment = () => {
 };
 
 // function to add a role
-addRole = () => {
-    inquirer.promptUser([
+addRole = function() {
+    inquirer
+    .promptUser([
         {
             type: 'input',
             name: 'role',
@@ -205,7 +206,7 @@ addRole = () => {
             }
         }
     ])
-        .then(answer => {
+        .then(function(answer) {
             const params = [answer.role, answer.salary];
 
             const roleSql = `SELECT name, id FROM department`;
@@ -240,8 +241,9 @@ addRole = () => {
         });
 };
 // function to add an employee
-addEmployee = () => {
-    inquirer.prompt([
+addEmployee = function() {
+    inquirer
+    .prompt([
         {
             type: 'input',
             name: 'firstName',
@@ -269,7 +271,7 @@ addEmployee = () => {
             }
         }
     ])
-    .then(answer => {
+    .then(function(answer) {
         const params = [answer.firstName, answer.lastName]
 
     // grab roles from roles table
@@ -330,7 +332,7 @@ addEmployee = () => {
     };
 
     // function to update an employee 
-    updateEmployee = () => {
+    updateEmployee = function() {
     // get employees from employee table 
     const employeeSql = `SELECT * FROM employee`;
 
@@ -393,7 +395,7 @@ addEmployee = () => {
     };
 
     // function to update an employee 
-    updateManager = () => {
+    updateManager = function() {
     // get employees from employee table 
     const employeeSql = `SELECT * FROM employee`;
 
@@ -456,7 +458,7 @@ addEmployee = () => {
     };
 
     // function to view employee by department
-    employeeDepartment = () => {
+    employeeDepartment = function() {
     console.log('Showing employee by departments...\n');
     const sql = `SELECT employee.first_name, 
                     employee.last_name, 
@@ -473,7 +475,7 @@ addEmployee = () => {
     };
 
     // function to delete department
-    deleteDepartment = () => {
+    deleteDepartment = function() {
     const deptSql = `SELECT * FROM department`; 
 
     connection.query(deptSql, (err, data) => {
@@ -504,7 +506,7 @@ addEmployee = () => {
     };
 
     // function to delete role
-    deleteRole = () => {
+    deleteRole = function() {
     const roleSql = `SELECT * FROM role`; 
 
     connection.query(roleSql, (err, data) => {
@@ -535,7 +537,7 @@ addEmployee = () => {
     };
 
     // function to delete employees
-    deleteEmployee = () => {
+    deleteEmployee = function() {
     // get employees from employee table 
     const employeeSql = `SELECT * FROM employee`;
 
@@ -568,7 +570,7 @@ addEmployee = () => {
     };
 
     // view department budget 
-    viewBudget = () => {
+    viewBudget = function() {
     console.log('Showing budget by department...\n');
 
     const sql = `SELECT department_id AS id, 
