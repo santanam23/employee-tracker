@@ -1,5 +1,33 @@
-# employee-tracker
+# Employee-Tracker (CMS)
+![Github licence](http://img.shields.io/badge/license-MIT-blue.svg)
 
+## Description 
+A command-line application to manage a company's employee database, using Node.js, Inquirer, and MySQL.
 
-![Screen Shot 2022-02-20 at 5 03 10 PM](https://user-images.githubusercontent.com/94243898/154868277-af9fb845-9b36-4727-a665-e4b4243d871e.png)
-![Screen Shot 2022-02-20 at 5 02 49 PM (2)](https://user-images.githubusercontent.com/94243898/154868297-3af0b944-928d-43b1-bc1e-0f5e9763db3a.png)
+## Table of Contents
+* [Installation](#installation)
+* [Usage](#usage)
+* [License](#license)
+* [Contributing](#contributing)
+* [Tests](#tests)
+* [Questions](#questions)
+
+## Installation 
+The user should clone the repository from GitHub. This application requires Node.js, Inquirer, console.table and mysql2. To start application run `npm start`. To view database from MySQL `run mysql -u root -p`. 
+
+## Usage 
+This application will allow users to view, add, and edit employees, roles, departments, and managers. 
+
+View walk through video via [Screencastify]()
+
+## License 
+This project is license under MIT
+
+## Contributing 
+Contributors should read the installation section. 
+
+## Tests
+There are no tests for this application. 
+
+## Questions
+If you have any questions about this projects, please contact me directly at miriam.steph.santana@gmail.com. You can view more of my projects at https://github.com/santanam23.

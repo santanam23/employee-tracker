@@ -197,14 +197,14 @@ addRole = () => {
       }
     },
     {
-      type: 'input', 
-      name: 'salary',
-      message: "What is the salary of this role?",
-      validate: addSalary => {
-        if (isNaN(addSalary)) {
+        type: 'input',
+        name: 'salary',
+        message: ({ role }) => `Please enter the ${role}'s salary:`,
+        validate: (addSalary) => {
+          if (isNaN(addSalary)) {
             return true;
-        } else {
-            console.log('Please enter a salary');
+          } else {
+            console.log(({ role }) => `Please enter a the ${role}'s salary!`);
             return false;
         }
       }
