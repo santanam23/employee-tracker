@@ -201,13 +201,13 @@ addRole = () => {
         name: 'salary',
         message: ({ role }) => `Please enter the ${role}'s salary:`,
         validate: (addSalary) => {
-          if (isNaN(addSalary)) {
-            return true;
-          } else {
-            console.log(({ role }) => `Please enter a the ${role}'s salary!`);
-            return false;
-        }
-      }
+            if (!isNaN(addSalary)) {
+              return true;
+            } else {
+              console.log(({ role }) => `Please enter a the ${role}'s salary!`);
+              return false;
+            }
+          }
     }
   ])
     .then(answer => {
@@ -232,7 +232,7 @@ addRole = () => {
           .then(deptChoice => {
             const dept = deptChoice.dept;
             params.push(dept);
-
+            console.log(params);
             const sql = `INSERT INTO role (title, salary, department_id)
                         VALUES (?, ?, ?)`;
 
