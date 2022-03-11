@@ -1,6 +1,9 @@
 const e = require('express');
 const express = require('express');
 const mysql = require('mysql2');
+const inputCheck = require('./utils/inputCheck');
+
+
 const PORT = process.env.PORT || 3002;
 const app = express();
 
@@ -59,16 +62,20 @@ app.get('/api/employee/:id', (req, res) => {
 
 
 // Create a employee
-// const sql = `INSERT INTO employee (id, first_name, last_name, role_id, manager_id) 
-//               VALUES (?,?,?,?,?)`;
-// const params = [1, 'Ronald', 'Firbank', 1, 102];
+const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) 
+              VALUES (?,?,?,?)`;
+const params = [body.first_name, body.last_name, body.role_id, body.manager_id];
 
-// db.query(sql, params, (err, result) => {
-//   if (err) {
-//     console.log(err);
-//   }
-//   console.log(result);
-// });
+db.query(sql, params, (err, result) => {
+  if (err) {
+    res.status(400).json({ error: err.message});
+    return;
+  } 
+  res.json({
+    message: 'success',
+    data: body
+  });
+});
 
 // Delete a employee
 app.delete('/api/employee/:id', (req, res) => {
@@ -91,7 +98,14 @@ app.delete('/api/employee/:id', (req, res) => {
    }
   });
 });
-
+// Create an employee
+app.post('/api/employee', ({body}, res) => {
+  const errors = inputCheck(body, 'first_name', 'last_name', 'role_id', 'manager_id');
+  if (errors) {
+    res.status(400).json({error: errors });
+    return;
+  }
+});
 // Default response for any other request (Not Found)
 app.use((req, res) => {
   res.status(404).end();
