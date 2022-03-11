@@ -1,3 +1,4 @@
+const e = require('express');
 const express = require('express');
 const mysql = require('mysql2');
 const PORT = process.env.PORT || 3002;
@@ -23,16 +24,41 @@ const db = mysql.createConnection(
 db.query(`SELECT * FROM employee`, (err, rows) => {
   console.log(rows);
 });
+// Get all candidates
+app.get('/api/employee', (req, res) => {
+  const sql = `SELECT * FROM employee`;
 
-// GET a single candidate
-db.query(`SELECT * FROM employee WHERE id = 1`, (err, row) => {
-  if (err) {
-    console.log(err);
-  }
-  console.log(row);
+  db.query(sql, (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.json({
+      message: 'success',
+      data: rows
+    });
+  });
 });
 
-// Create a candidate
+// GET a single employee
+app.get('/api/employee/:id', (req, res) => {
+  const sql = `SELECT * FROM employee WHERE id = ?`;
+  const params = [req.params.id];
+
+  db.query(sql, params, (err, row) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    res.json({
+      message: 'success',
+      data: row
+    });
+  });
+});
+
+
+// Create a employee
 // const sql = `INSERT INTO employee (id, first_name, last_name, role_id, manager_id) 
 //               VALUES (?,?,?,?,?)`;
 // const params = [1, 'Ronald', 'Firbank', 1, 102];
@@ -44,7 +70,7 @@ db.query(`SELECT * FROM employee WHERE id = 1`, (err, row) => {
 //   console.log(result);
 // });
 
-// Delete a candidate
+// Delete a employee
 // db.query(`DELETE FROM employee WHERE id = ?`, 1, (err, result) => {
 //   if (err) {
 //     console.log(err);
