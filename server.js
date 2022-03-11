@@ -71,12 +71,26 @@ app.get('/api/employee/:id', (req, res) => {
 // });
 
 // Delete a employee
-// db.query(`DELETE FROM employee WHERE id = ?`, 1, (err, result) => {
-//   if (err) {
-//     console.log(err);
-//   }
-//   console.log(result);
-// });
+app.delete('/api/employee/:id', (req, res) => {
+  const sql = `DELETE FROM employee WHERE id = ?`;
+  const params = [req.params.id];
+
+  db.query(sql, params, (err, result) => {
+  if (err) {
+    res.statusMessage(400).json({ error: res.message });
+  } else if (!result.affectRows) {
+    res.json({
+      message: 'Employee not found'
+    });
+  } else {
+    res.json({
+      message: 'deleted',
+      changes: result.affectedRows,
+      id: req.params.id
+    });
+   }
+  });
+});
 
 // Default response for any other request (Not Found)
 app.use((req, res) => {
