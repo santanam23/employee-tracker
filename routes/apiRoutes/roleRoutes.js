@@ -61,9 +61,33 @@ router.get('/role/:id', (req, res) => {
    });
   });
 
-  // originally app.put('/api/role/:id')
+ // originally app.put('/api/role/:id')
 router.put('/role/:id', (req, res) => {
+    const errors = inputCheck(req.body, 'department_id');
 
+    if (errors) {
+        res.status(400).json({ error: errors});
+        return;
+    }
+    const sql = `UPDATE employee SET department_id = ? WHERE id = ?`;
+    
+    const params = [res.body.department_id, req.params.id];
+    
+    db.query(sql, params, (err, result) => {
+    if (err) {
+        res.status(400).json({ error: err.message });
+    } else if (!result.affectedRows) {
+        res.json({
+        message: 'role not found'
+        });
+    } else {
+        res.json({
+        message: 'success',
+        data: req.body,
+        changes: result.affectedRows
+        });
+    }
+    });
 });
 
 // Delete a role

@@ -59,10 +59,6 @@ router.get('/department/:id', (req, res) => {
    });
   });
 
-  // originally app.put('/api/employee/:id')
-router.put('/employee/:id', (req, res) => {
-
-});
 // Delete a department
 router.delete('/department/:id', (req, res) => {
     const sql = `DELETE FROM department WHERE id = ?`;
