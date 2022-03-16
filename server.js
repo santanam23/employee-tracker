@@ -20,13 +20,13 @@ const db = mysql.createConnection(
     password: 'R@m!r3Z*1',
     database: 'employee_db'
   },
-  console.log('Connected to the election database.')
+  console.log('Connected to the employee database.')
 );
 
 db.query(`SELECT * FROM employee`, (err, rows) => {
   console.log(rows);
 });
-// Get all candidates
+// Get all employees
 app.get('/api/employee', (req, res) => {
   const sql = `SELECT * FROM employee`;
 
