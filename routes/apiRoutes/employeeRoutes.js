@@ -61,7 +61,7 @@ const inputCheck = require('../../utils/inputCheck');
    });
   });
   
-// originally app.put('/api/candidate/:id')
+// originally app.put('/api/employee/:id')
 router.put('/employee/:id', (req, res) => {
 
 });
