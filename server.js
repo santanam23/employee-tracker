@@ -35,30 +35,42 @@ function start () {
       switch(answers.start) {
         case "View By Department":
           // code block
+          viewByDepartment();
           break;
         case "View By Role":
+          viewByRole();
           break;
-          case "View All Employees":
-            break;
+        case "View All Employees":
+          viewAllEmployees();
+          break;
         case "Add Department":
           // code block
+          addDepartment();
           break;
         case "Add Employee Role":
+          addEmployeeRole();
           break;
         case "Add Role":
+          addRole();
           break;
         case "Update Department":
           // code block
+          updateDepartment();
           break;
         case "Update Role":
+          updateRole();
           break;
         case "Update Employee":
+          updateEmployee();
           break;
         case "Delete Department":
+          deleteDepartment();
           break;
         case "Delete Role": 
+          deleteRole();        
           break;
         case "Delete Employee":
+          deleteEmployee();
           break;
         case "Done":
           // code block
