@@ -198,6 +198,37 @@ function start() {
         });
       });
     };
+    // Update Section
+    function updateDepartment() {
+      inquirer
+        .prompt([
+          
+        ])
+        .then((answers) => {
+          
+       
+        });
+      }
+    function updateRole() {
+      inquirer
+        .prompt([
+          
+        ])
+        .then((answers) => {
+          
+      
+        });
+      }
+    function updateEmployee() {
+      inquirer
+        .prompt([
+          
+        ])
+        .then((answers) => {
+          
+       
+        });
+      }
   // Delete Section
   function deleteDepartment() {
     inquirer
