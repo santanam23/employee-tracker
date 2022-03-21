@@ -1,4 +1,3 @@
-const express = require('express');
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
 const cTable = require('console.table');
@@ -20,7 +19,7 @@ db.connect(err => {
   start();
 });
 
-function start () {
+function start() {
   inquirer
     .prompt([
       
@@ -80,32 +79,16 @@ function start () {
           // code block
           console.log("default");
       }
-      
-    })
-    .catch((error) => {
-      if (error.isTtyError) {
-        // Prompt couldn't be rendered in the current environment
-      } else {
-        // Something else went wrong
-      }
     });
   }
   
   // View By Department, Role or Employee Section
   function viewByDepartment() {
-  inquirer
-    .prompt([
-      
-    ])
-    .then((answers) => {
-      
-    })
-    .catch((error) => {
-      if (error.isTtyError) {
-        // Prompt couldn't be rendered in the current environment
-      } else {
-        // Something else went wrong
-      }
+    const sql = `SELECT department.id AS id, department.name AS department FROM department;`
+    db.query(sql, (err, rows) => {
+      if (err) throw err;
+      console.table(rows);
+      start();
     });
   }
   function viewByRole() {
@@ -115,13 +98,6 @@ function start () {
       ])
       .then((answers) => {
         
-      })
-      .catch((error) => {
-        if (error.isTtyError) {
-          // Prompt couldn't be rendered in the current environment
-        } else {
-          // Something else went wrong
-        }
       });
     }
     function viewAllEmployees() {
@@ -131,13 +107,6 @@ function start () {
         ])
         .then((answers) => {
           
-        })
-        .catch((error) => {
-          if (error.isTtyError) {
-            // Prompt couldn't be rendered in the current environment
-          } else {
-            // Something else went wrong
-          }
         });
       }
   // Add Section
@@ -148,13 +117,6 @@ function start () {
       ])
       .then((answers) => {
         
-      })
-      .catch((error) => {
-        if (error.isTtyError) {
-          // Prompt couldn't be rendered in the current environment
-        } else {
-          // Something else went wrong
-        }
       });
     }
   function addEmployeeRole() {
@@ -164,13 +126,6 @@ function start () {
       ])
       .then((answers) => {
         
-      })
-      .catch((error) => {
-        if (error.isTtyError) {
-          // Prompt couldn't be rendered in the current environment
-        } else {
-          // Something else went wrong
-        }
       });
     }
   function addEmployee() {
@@ -180,13 +135,6 @@ function start () {
       ])
       .then((answers) => {
         
-      })
-      .catch((error) => {
-        if (error.isTtyError) {
-          // Prompt couldn't be rendered in the current environment
-        } else {
-          // Something else went wrong
-        }
       });
     }
   // Delete Section
@@ -197,13 +145,7 @@ function start () {
       ])
       .then((answers) => {
         
-      })
-      .catch((error) => {
-        if (error.isTtyError) {
-          // Prompt couldn't be rendered in the current environment
-        } else {
-          // Something else went wrong
-        }
+     
       });
     }
   function deleteRole() {
@@ -213,13 +155,7 @@ function start () {
       ])
       .then((answers) => {
         
-      })
-      .catch((error) => {
-        if (error.isTtyError) {
-          // Prompt couldn't be rendered in the current environment
-        } else {
-          // Something else went wrong
-        }
+    
       });
     }
   function deleteEmployee() {
@@ -229,12 +165,6 @@ function start () {
       ])
       .then((answers) => {
         
-      })
-      .catch((error) => {
-        if (error.isTtyError) {
-          
-        } else {
-          
-        }
+     
       });
     }
