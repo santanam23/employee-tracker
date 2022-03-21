@@ -100,7 +100,7 @@ function start() {
       });
     }
   function viewAllEmployees(){
-    const sql = `SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name`;
+    const sql = `SELECT employee.id, employee.first_name, employee.last_name, employee.role_id, employee.manager_id FROM employee`;
     db.query(sql, (err, rows) => {
       if (err) throw err;
       console.table(rows);

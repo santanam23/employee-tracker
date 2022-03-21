@@ -16,7 +16,7 @@
   * [Questions](#questions)
   
   ## Installation 
-  npm i, npm console.table, npm inquirer,npm mysql2
+  npm i console.table inquirer mysql2
 
   ## Usage 
   Make sure to checkout the package json section to know what to add before getting started.
