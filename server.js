@@ -28,10 +28,46 @@ function start () {
         type: "list",
         name: "start",
         message: "Please continue if you would like to VIEW, UPDATE OR DELETE employee information.",
-        choices: ["View", "Add", "Update", "Done"]
+        choices: ["View By Department", "View By Role", "View all Employees", "Add Department", "Add Employee Role", "Add Role", "Update Department", "Update Role", "Update Employee", "Delete Department", "Delete Role", "Delete Employee", "Done"]
       }
     ])
     .then((answers) => {
+      switch(answers.start) {
+        case "View By Department":
+          // code block
+          break;
+        case "View By Role":
+          break;
+          case "View All Employees":
+            break;
+        case "Add Department":
+          // code block
+          break;
+        case "Add Employee Role":
+          break;
+        case "Add Role":
+          break;
+        case "Update Department":
+          // code block
+          break;
+        case "Update Role":
+          break;
+        case "Update Employee":
+          break;
+        case "Delete Department":
+          break;
+        case "Delete Role": 
+          break;
+        case "Delete Employee":
+          break;
+        case "Done":
+          // code block
+          console.log("Finished!")
+          break;
+        default:
+          // code block
+          console.log("default");
+      }
       
     })
     .catch((error) => {
