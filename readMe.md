@@ -1,7 +1,7 @@
 # Employee Tracker
   
   ## Description 
-  This is an employee tracker where one can VIEW, UPDATE, EDIT and Delete employee information.
+  This is an employee tracker where one can VIEW, UPDATE, EDIT and Delete employee information. Screencastify Link: https://watch.screencastify.com/v/IwvnAvRYN8BvusDCIr4V
   ## Table of Contents
   * [Installation](#installation)
 
