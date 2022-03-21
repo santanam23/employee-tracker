@@ -46,8 +46,8 @@ function start() {
           // code block
           addDepartment();
           break;
-        case "Add Employee Role":
-          addEmployeeRole();
+        case "Add Employee":
+          addEmployee();
           break;
         case "Add Role":
           addRole();
@@ -84,7 +84,7 @@ function start() {
   
   // View By Department, Role or Employee Section
   function viewByDepartment() {
-    const sql = `SELECT department.id AS id, department.name AS department FROM department;`
+    const sql = `SELECT department.id AS id, department.name FROM department;`
     db.query(sql, (err, rows) => {
       if (err) throw err;
       console.table(rows);
@@ -99,46 +99,109 @@ function start() {
       start();
       });
     }
-    function viewAllEmployees() {
-      const sql = `SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, 
-      CONCAT (manager.first_name, " ", manager.last_name) AS manager FROM employee
-      LEFT JOIN role ON employee.role_id = role.id
-      LEFT JOIN department ON role.department_id = department.id
-      LEFT JOIN employee manager ON employee.manager_id = manager.id`;
-      db.query(sql, (err, rows) => {
-        if (err) throw err;
-        console.table(rows);
-        start();
-        });
+  function viewAllEmployees(){
+    const sql = `SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, 
+    CONCAT (manager.first_name, " ", manager.last_name) AS manager FROM employee
+    LEFT JOIN role ON employee.role_id = role.id
+    LEFT JOIN department ON role.department_id = department.id
+    LEFT JOIN employee manager ON employee.manager_id = manager.id`;
+    db.query(sql, (err, rows) => {
+      if (err) throw err;
+      console.table(rows);
+      start();
+      });
       }
-  // Add Section
+  // Add Department
   function addDepartment() {
     inquirer
       .prompt([
-        
+        {
+        type: 'input',
+        name: 'addByDepartment',
+        validate: addByDepartment => {
+          if(addByDepartment) {
+            return true;
+          } else {
+            console.log('Department Needs To Be Entered');
+            return false;
+          }
+        }
+      }
       ])
-      .then((answers) => {
-        
+      .then(answers => {
+        const sql = `INSERT INTO department(name)
+        VALUES (?)`;
+        db.query(sql, answers.addByDepartment, (err, result) => {
+        if (err) throw err;
+        console.log('Added ' + answers.addByDepartment + " addition success!"); 
+        viewByDepartment();
       });
-    }
-  function addEmployeeRole() {
+    });
+  };
+  function addRole() {
     inquirer
       .prompt([
-        
-      ])
-      .then((answers) => {
-        
+        {
+          type: 'input',
+          name: 'addByRole',
+          validate: addByRole => {
+            if(addByRole) {
+              return true;
+            } else {
+              console.log('Role Needs To Be Entered');
+              return false;
+            }
+          }
+        }
+        ])
+        .then(answers => {
+          const sql = `INSERT INTO role(name)
+          VALUES (?)`;
+          db.query(sql, answers.addByRole, (err, result) => {
+          if (err) throw err;
+          console.log('Added ' + answers.addByRole + " addition success!"); 
+          viewByRole();
+        });
       });
-    }
+    };
   function addEmployee() {
     inquirer
       .prompt([
-        
-      ])
-      .then((answers) => {
-        
+        {
+          type: 'input',
+          name: 'addByFirstName',
+          validate: addFirstName => {
+            if(addFirstName) {
+              return true;
+            } else {
+              console.log('First Name Needs To Be Entered');
+              return false;
+            }
+          }
+        },
+        {
+          type: 'input',
+          name: 'addByLastName',
+          validate: addLastName => {
+            if(addLastName) {
+              return true;
+            } else {
+              console.log('Last Name Needs To Be Entered');
+              return false;
+            }
+          }
+        }
+        ])
+        .then(answers => {
+          const sql = `INSERT INTO employee (first_name, last_name)
+          VALUES (?,?)`;
+          db.query(sql, answers.addFirstName, answers.addLastName, (err, result) => {
+          if (err) throw err;
+          console.log("Addition success!"); 
+          addEmployee();
+        });
       });
-    }
+    };
   // Delete Section
   function deleteDepartment() {
     inquirer
