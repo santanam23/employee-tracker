@@ -27,7 +27,7 @@ function start() {
         type: "list",
         name: "start",
         message: "Please continue if you would like to VIEW, UPDATE OR DELETE employee information.",
-        choices: ["View By Department", "View By Role", "View all Employees", "Add Department", "Add Employee Role", "Add Role", "Update Department", "Update Role", "Update Employee", "Delete Department", "Delete Role", "Delete Employee", "Done"]
+        choices: ["View By Department", "View By Role", "View All Employees", "Add Department", "Add Employee", "Add Role", "Update Department", "Update Role", "Update Employee", "Delete Department", "Delete Role", "Delete Employee", "Done"]
       }
     ])
     .then((answers) => {
@@ -84,7 +84,7 @@ function start() {
   
   // View By Department, Role or Employee Section
   function viewByDepartment() {
-    const sql = `SELECT department.id AS id, department.name FROM department;`
+    const sql = `SELECT department.id AS id, department.name, department.description FROM department;`
     db.query(sql, (err, rows) => {
       if (err) throw err;
       console.table(rows);
@@ -92,7 +92,7 @@ function start() {
     });
   }
   function viewByRole() {
-    const sql = `SELECT role.id, role.title, department.name AS department FROM role INNER JOIN department ON role.department_id = department.id`;
+    const sql = `SELECT role.id, role.title, role.salary, department.name AS department FROM role INNER JOIN department ON role.department_id = department.id`;
     db.query(sql, (err, rows) => {
       if (err) throw err;
       console.table(rows);
@@ -186,20 +186,49 @@ function start() {
               return false;
             }
           }
+        },
+        {
+          type: 'input',
+          name: 'addByRole',
+          validate: addByRole => {
+            if(addByRole) {
+              return true;
+            } else {
+              console.log('Role Needs To Be Entered');
+              return false;
+            }
+          }
+        },
+        {
+          type: 'input',
+          name: 'addManagerId',
+          validate: addManagerId => {
+            if(addManagerId) {
+              return true;
+            } else {
+              console.log('Manager ID Needs To Be Entered');
+              return false;
+            }
+          }
         }
         ])
         .then(answers => {
-          const sql = `INSERT INTO employee (first_name, last_name)
-          VALUES (?,?)`;
-          db.query(sql, answers.addFirstName, answers.addLastName, (err, result) => {
+          const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id)
+          VALUES (?, ?, ?, ?)`;
+          db.query(sql, answers.addFirstName, answers.addLastName, answers.addByRole, answers.addManagerId, (err, result) => {
           if (err) throw err;
           console.log("Addition success!"); 
-          addEmployee();
+          viewAllEmployees();
         });
       });
     };
     // Update Section
     function updateDepartment() {
+      const departmentSql = `SELECT * FROM department`;
+      db.query(departmentSql, (err, data) => {
+        if (err) throw err;
+      })
+
       inquirer
         .prompt([
           
@@ -210,6 +239,10 @@ function start() {
         });
       }
     function updateRole() {
+      const roleSql = `SELECT * FROM role`;
+      db.query(roleSql, (err, data) => {
+        if (err) throw err;
+      })
       inquirer
         .prompt([
           
@@ -220,6 +253,10 @@ function start() {
         });
       }
     function updateEmployee() {
+      const employeeSql = `SELECT * FROM employee`;
+      db.query(employeeSql, (err, data) => {
+        if (err) throw err;
+      })
       inquirer
         .prompt([
           
