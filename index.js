@@ -8,7 +8,7 @@ const db = mysql.createConnection({
   // Your MySQL username,
   user: 'root',
   // Your MySQL password
-  PORT: process.env.PORT || 3006,
+  PORT: 3006,
   password: 'R@m!r3Z*1',
   database: 'employee_db'
 });
@@ -100,7 +100,7 @@ function start() {
       });
     }
   function viewAllEmployees(){
-    const sql = `SELECT employee.id, employee.first_name, employee.last_name, employee.role_id, employee.manager_id FROM employee`;
+    const sql = `SELECT * FROM employee`;
     db.query(sql, (err, rows) => {
       if (err) throw err;
       console.table(rows);
@@ -113,9 +113,10 @@ function start() {
       .prompt([
         {
         type: 'input',
-        name: 'addByDepartment',
-        validate: addByDepartment => {
-          if(addByDepartment) {
+        name: 'departmentName',
+        message: 'What is your departments name?',
+        validate: departmentName => {
+          if(departmentName) {
             return true;
           } else {
             console.log('Department Needs To Be Entered');
@@ -127,9 +128,9 @@ function start() {
       .then(answers => {
         const sql = `INSERT INTO department(name)
         VALUES (?)`;
-        db.query(sql, answers.addByDepartment, (err, result) => {
+        db.query(sql, answers.departmentName, (err, result) => {
         if (err) throw err;
-        console.log('Added ' + answers.addByDepartment + " addition success!"); 
+        console.log('Added ' + answers.departmentName + " addition success!"); 
         viewByDepartment();
       });
     });
@@ -139,23 +140,52 @@ function start() {
       .prompt([
         {
           type: 'input',
-          name: 'addByRole',
-          validate: addByRole => {
-            if(addByRole) {
+          name: 'roleTitle',
+          message: 'What is your role title?',
+          validate: roleTitle => {
+            if(roleTitle) {
               return true;
             } else {
               console.log('Role Needs To Be Entered');
               return false;
             }
           }
+        },
+        {
+          type: 'input',
+          name: 'roleSalary',
+          message: 'What is your role salary?',
+          validate: roleSalary => {
+            if(roleSalary) {
+              return true;
+            } else {
+              console.log('Role Salary Must Be Entered!');
+              return false;
+            }
+          }
+        },
+        {
+          type: 'list',
+          name: 'roleDepartmentId',
+          message: 'Choose your Department',
+          choices: async function () {
+            const sql = `SELECT * FROM department`;
+            const result = await db.promise().query(sql);
+            console.log(result.map(department => {
+              return {
+                name: department.name,
+                value: department.id
+              }
+            }));
+          }
         }
         ])
         .then(answers => {
-          const sql = `INSERT INTO role(name)
+          const sql = `INSERT INTO role(title)
           VALUES (?)`;
-          db.query(sql, answers.addByRole, (err, result) => {
+          db.query(sql, answers.roleTitle, (err, result) => {
           if (err) throw err;
-          console.log('Added ' + answers.addByRole + " addition success!"); 
+          console.log('Added ' + answers.roleTitle + " addition success!"); 
           viewByRole();
         });
       });
@@ -189,9 +219,9 @@ function start() {
         },
         {
           type: 'input',
-          name: 'addByRole',
-          validate: addByRole => {
-            if(addByRole) {
+          name: 'roleTitle',
+          validate: roleTitle => {
+            if(roleTitle) {
               return true;
             } else {
               console.log('Role Needs To Be Entered');
@@ -215,7 +245,7 @@ function start() {
         .then(answers => {
           const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id)
           VALUES (?, ?, ?, ?)`;
-          db.query(sql, answers.addFirstName, answers.addLastName, answers.addByRole, answers.addManagerId, (err, result) => {
+          db.query(sql, answers.addFirstName, answers.addLastName, answers.roleTitle, answers.addManagerId, (err, result) => {
           if (err) throw err;
           console.log("Addition success!"); 
           viewAllEmployees();
